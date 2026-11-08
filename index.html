@@ -26,7 +26,7 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
-html { scroll-padding-top: 6rem; }
+html { scroll-padding-top: 8rem; }
 
 body {
   margin: 0;
@@ -272,6 +272,62 @@ a:hover { color: var(--accent); }
   padding-left: 1.25rem;
 }
 
+.services-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.service-line {
+  display: grid;
+  gap: 0.25rem 1.5rem;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.service-line:first-child {
+  border-top: 1px solid var(--border);
+}
+
+.service-name {
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 1.0625rem;
+}
+
+.service-body {
+  display: grid;
+  gap: 0.375rem;
+}
+
+.service-desc {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.service-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: center;
+  margin: 0;
+}
+
+.service-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  text-decoration: underline;
+  overflow-wrap: anywhere;
+}
+
+.service-note {
+  margin: 1.5rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.9375rem;
+  max-width: 70ch;
+}
+
 .onboarding {
   margin: 0 0 2rem;
   padding-left: 1.25rem;
@@ -461,7 +517,43 @@ details p {
   min-height: 44px;
 }
 
+@media (max-width: 47.999rem) {
+  .header-inner {
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    padding-block: 0.5rem;
+  }
+
+  .header-inner > nav {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .nav-list {
+    flex-wrap: nowrap;
+    gap: 0.25rem;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .nav-list::-webkit-scrollbar { display: none; }
+
+  .nav-list li { flex: 0 0 auto; }
+
+  .nav-list a { white-space: nowrap; }
+
+  .logo {
+    flex: 0 1 auto;
+    font-size: 0.8125rem;
+  }
+}
+
 @media (min-width: 48rem) {
+  html { scroll-padding-top: 6rem; }
+
   .hero-grid {
     grid-template-columns: 1.15fr 0.85fr;
     gap: 4rem;
@@ -473,6 +565,11 @@ details p {
   }
 
   .role-line {
+    grid-template-columns: 11rem 1fr;
+    align-items: baseline;
+  }
+
+  .service-line {
     grid-template-columns: 11rem 1fr;
     align-items: baseline;
   }
@@ -496,6 +593,7 @@ document.documentElement.classList.replace("no-js", "js");
       <ul class="nav-list">
         <li><a href="#workflow">Процесс</a></li>
         <li><a href="#roles">Роли</a></li>
+        <li><a href="#services">Сервисы</a></li>
         <li><a href="#start">Старт</a></li>
         <li><a href="#faq">FAQ</a></li>
       </ul>
@@ -586,6 +684,83 @@ document.documentElement.classList.replace("no-js", "js");
           <p class="role-desc">Оркестратор. Распределяет задачи и запускает исполнителей через task.</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section id="services" class="section" aria-labelledby="services-heading">
+    <div class="container">
+      <h2 id="services-heading">Что понадобится</h2>
+      <p class="section-lead">Тот же набор сервисов, на котором работает автор. Подписки и аккаунты оформляются на себя: свои ключи, общие доступы не передаются.</p>
+
+      <h3>Платные подписки</h3>
+      <ul class="services-list">
+        <li class="service-line">
+          <span class="service-name">ChatGPT с доступом к Codex</span>
+          <div class="service-body">
+            <p class="service-desc">Модель Sol (openai-codex/gpt-6.1-sol): планирует, проверяет и принимает работу. Квоты зависят от тарифа.</p>
+            <p class="service-links"><a href="https://chatgpt.com/pricing">Тарифы ChatGPT</a></p>
+          </div>
+        </li>
+        <li class="service-line">
+          <span class="service-name">OpenCode Go</span>
+          <div class="service-body">
+            <p class="service-desc">Недорогие исполнители: Kimi K2.7 Code пишет код, GLM-5.3 Flash берёт разведку и мелкие задачи.</p>
+            <p class="service-links"><a href="https://opencode.ai/go">OpenCode Go</a></p>
+          </div>
+        </li>
+        <li class="service-line">
+          <span class="service-name">Модель для самого Hermes</span>
+          <div class="service-body">
+            <p class="service-desc">Ведёт диалог, разбирает запросы и задачи. У автора это Anthropic Claude, Hermes поддерживает и других провайдеров.</p>
+            <p class="service-links"><a href="https://claude.com/pricing">Тарифы Claude</a></p>
+          </div>
+        </li>
+      </ul>
+
+      <h3>Бесплатные инструменты с открытым кодом</h3>
+      <ul class="services-list">
+        <li class="service-line">
+          <span class="service-name">Hermes Agent</span>
+          <div class="service-body">
+            <p class="service-desc">Агент, которому вы ставите задачи: приложение, терминал или Telegram.</p>
+            <p class="service-links"><a href="https://hermes-agent.nousresearch.com/docs/getting-started/installation">Установка Hermes</a></p>
+          </div>
+        </li>
+        <li class="service-line">
+          <span class="service-name">oh-my-pi (OMP)</span>
+          <div class="service-body">
+            <p class="service-desc">Запускает Sol и исполнителей OpenCode Go по ролям.</p>
+            <p class="service-links"><a href="https://github.com/can1357/oh-my-pi">oh-my-pi на GitHub</a></p>
+          </div>
+        </li>
+        <li class="service-line">
+          <span class="service-name">Beads (bd)</span>
+          <div class="service-body">
+            <p class="service-desc">Трекер задач внутри репозитория: запрос, критерии приёмки, разрешение на запуск, история.</p>
+            <p class="service-links"><a href="https://github.com/gastownhall/beads">Beads на GitHub</a></p>
+          </div>
+        </li>
+        <li class="service-line">
+          <span class="service-name">Git и GitHub</span>
+          <div class="service-body">
+            <p class="service-desc">Хранение кода, версии и скачивание этого набора.</p>
+            <p class="service-links"><a href="https://git-scm.com/downloads">Скачать Git</a><a href="https://github.com">GitHub</a></p>
+          </div>
+        </li>
+      </ul>
+
+      <h3>По желанию</h3>
+      <ul class="services-list">
+        <li class="service-line">
+          <span class="service-name">Telegram</span>
+          <div class="service-body">
+            <p class="service-desc">Ставить задачи и давать разрешение на запуск с телефона через Hermes.</p>
+            <p class="service-links"><a href="https://hermes-agent.nousresearch.com/docs/user-guide/messaging">Подключение мессенджеров</a></p>
+          </div>
+        </li>
+      </ul>
+
+      <p class="service-note">Компьютер: macOS проверен. Linux и WSL2 заявлены как цель, но ещё не проверены.</p>
     </div>
   </section>
 
