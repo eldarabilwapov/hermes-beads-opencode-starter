@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="ru" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hermes + Beads + OpenCode Go: starter kit</title>
+<meta name="description" content="Локальный starter kit: Sol планирует и ревьюит, недорогие модели исполняют. Hermes, Beads, OpenCode Go, OMP oh-my-pi.">
+<style>
+/* Purpose: static landing for the Hermes + Beads + OpenCode Go starter kit.
+   Limitations: no build step, no external assets/fonts/CDN/API/analytics,
+   no JavaScript required for content or navigation. Copy button is progressive
+   enhancement with Clipboard API → execCommand fallback → manual selection. */
+
+:root {
+  --bg: #16191f;
+  --bg-code: #0f1217;
+  --text: #e8ecf1;
+  --text-muted: #a8b4c4;
+  --accent: #92b5e8;
+  --accent-hover: #b3caf0;
+  --border: #3a4452;
+  --focus: #ffffff;
+  --pad-inline: clamp(1.25rem, 0.5rem + 3vw, 3rem);
+  --max-width: 72rem;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-padding-top: 6rem; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  line-height: 1.55;
+  color: var(--text);
+  background: var(--bg);
+  text-wrap: pretty;
+}
+
+h1, h2, h3, .btn, .cta, summary { text-wrap: balance; }
+
+a { color: var(--text); }
+a:hover { color: var(--accent); }
+
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(-120%);
+  padding: 0.75rem 1rem;
+  background: var(--accent);
+  color: var(--bg);
+  text-decoration: none;
+  font-weight: 600;
+  z-index: 100;
+}
+.skip-link:focus { transform: translateY(0); }
+
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: var(--pad-inline);
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  min-height: 4rem;
+  padding-block: 0.75rem;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  line-height: 1.25;
+}
+
+.nav-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-list a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+  text-decoration: none;
+  font-weight: 500;
+  border-radius: 0;
+}
+
+.nav-list a:hover {
+  color: var(--accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.hero {
+  padding-block: clamp(4rem, 8vw, 7rem);
+}
+
+.hero-grid {
+  display: grid;
+  gap: 3rem;
+  align-items: start;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(2.25rem, 5.5vw, 4.5rem);
+  line-height: 1.08;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  max-width: 14ch;
+}
+
+.hero-lead {
+  margin: 1.5rem 0 0;
+  font-size: clamp(1.125rem, 2vw, 1.375rem);
+  color: var(--text-muted);
+  max-width: 52ch;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.hero-note {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.5rem;
+  align-self: end;
+}
+
+.label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.process-mini {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: step;
+}
+
+.process-mini li {
+  position: relative;
+  padding: 0.375rem 0 0.375rem 1.75rem;
+  color: var(--text-muted);
+}
+
+.process-mini li::before {
+  counter-increment: step;
+  content: counter(step) ".";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.section {
+  padding-block: clamp(3.5rem, 7vw, 6rem);
+  border-top: 1px solid var(--border);
+}
+
+.section:first-of-type { border-top: 0; }
+
+.section h2 {
+  margin: 0 0 1rem;
+  font-size: clamp(1.75rem, 3vw, 2.75rem);
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.section-lead {
+  margin: 0 0 2rem;
+  color: var(--text-muted);
+  max-width: 60ch;
+}
+
+.process-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.process-list li {
+  display: grid;
+  gap: 0.25rem 1.5rem;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.process-list li:first-child { border-top: 1px solid var(--border); }
+
+.process-list strong {
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 1.0625rem;
+}
+
+.process-list span { color: var(--text-muted); }
+
+.process-gate {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.25rem;
+}
+
+.roles-list {
+  display: grid;
+  gap: 0;
+}
+
+.role-line {
+  display: grid;
+  gap: 0.25rem 1.5rem;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.role-line:first-child {
+  border-top: 1px solid var(--border);
+}
+
+.role-name {
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 1.0625rem;
+}
+
+.role-desc {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.role-omp {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.25rem;
+}
+
+.onboarding {
+  margin: 0 0 2rem;
+  padding-left: 1.25rem;
+  color: var(--text-muted);
+  max-width: 70ch;
+}
+
+.onboarding li {
+  margin-bottom: 0.75rem;
+}
+
+.onboarding li::marker {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.start-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  list-style: none;
+  margin: 0 0 2rem;
+  padding: 0;
+}
+
+.clone-block {
+  border: 1px solid var(--border);
+  padding: 1.25rem;
+}
+
+.clone-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.clone-field {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: stretch;
+}
+
+.clone-code {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: block;
+  padding: 0.875rem 1rem;
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  overflow-x: auto;
+  white-space: nowrap;
+  user-select: all;
+}
+
+.clone-code::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.copy-status {
+  margin: 0.75rem 0 0;
+  min-height: 1.5rem;
+  color: var(--text-muted);
+  font-size: 0.9375rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0.625rem 1.25rem;
+  border: 1px solid;
+  text-decoration: none;
+  font-weight: 500;
+  line-height: 1.25;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  color: var(--bg);
+}
+
+.btn-secondary {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn-copy {
+  background: transparent;
+  border-color: var(--accent);
+  color: var(--accent);
+  min-width: 8.5rem;
+}
+
+.btn-copy:hover {
+  background: rgba(146, 181, 232, 0.1);
+}
+
+.btn-copy:disabled {
+  border-color: var(--border);
+  color: var(--text-muted);
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.no-js .js-only { display: none !important; }
+
+.faq-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+details {
+  border: 1px solid var(--border);
+}
+
+summary {
+  cursor: pointer;
+  padding: 1rem 1.25rem;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-weight: 500;
+  list-style: none;
+}
+
+summary::-webkit-details-marker { display: none; }
+
+summary::after {
+  content: "+";
+  color: var(--accent);
+  font-size: 1.25rem;
+  line-height: 1;
+  flex: none;
+}
+
+details[open] summary::after { content: "−"; }
+
+details p {
+  padding: 0 1.25rem 1.25rem;
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding-block: 2.5rem;
+  color: var(--text-muted);
+}
+
+.site-footer p { margin: 0 0 1rem; }
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-links a {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+@media (min-width: 48rem) {
+  .hero-grid {
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 4rem;
+  }
+
+  .process-list li {
+    grid-template-columns: 11rem 1fr;
+    align-items: baseline;
+  }
+
+  .role-line {
+    grid-template-columns: 11rem 1fr;
+    align-items: baseline;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn { transition: none; }
+}
+</style>
+<script>
+document.documentElement.classList.replace("no-js", "js");
+</script>
+</head>
+<body>
+<a href="#main" class="skip-link">Перейти к&nbsp;содержимому</a>
+
+<header class="site-header" id="top">
+  <div class="container header-inner">
+    <a class="logo" href="#top">Hermes + Beads + OpenCode&nbsp;Go</a>
+    <nav aria-label="Разделы">
+      <ul class="nav-list">
+        <li><a href="#workflow">Процесс</a></li>
+        <li><a href="#roles">Роли</a></li>
+        <li><a href="#start">Старт</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" aria-labelledby="hero-heading">
+    <div class="container hero-grid">
+      <div class="hero-text">
+        <h1 id="hero-heading">Умные решения. Недорогое исполнение.</h1>
+        <p class="hero-lead">Сильная модель разбирает задачу и проверяет результат. Kimi и GLM выполняют правки через OMP. Требования и решения сохраняются в&nbsp;Beads. Для&nbsp;провайдеров моделей нужны личные аккаунты, подписки или квоты.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://github.com/eldarabilwapov/hermes-beads-opencode-starter/blob/starter-kit/README.md">Начать с&nbsp;README</a>
+          <a class="btn btn-secondary" href="https://github.com/eldarabilwapov/hermes-beads-opencode-starter/tree/starter-kit">GitHub</a>
+          <a class="btn btn-secondary" href="https://github.com/eldarabilwapov/hermes-beads-opencode-starter/archive/refs/heads/starter-kit.zip">ZIP</a>
+        </div>
+      </div>
+      <aside class="hero-note" aria-label="Пример процесса">
+        <span class="label">Пример процесса</span>
+        <ol class="process-mini">
+          <li>Hermes: запрос</li>
+          <li>Beads: контракт</li>
+          <li>Sol: план</li>
+          <li>Owner go gate: одобрение</li>
+          <li>OpenCode Go: реализация</li>
+        </ol>
+      </aside>
+    </div>
+  </section>
+
+  <section id="workflow" class="section" aria-labelledby="workflow-heading">
+    <div class="container">
+      <h2 id="workflow-heading">Как выглядит цикл</h2>
+      <p class="section-lead">Это пример переходов, не live-пайплайн. После реализации результат снова проверяет Sol и принимает владелец.</p>
+      <ol class="process-list">
+        <li>
+          <strong>Hermes</strong>
+          <span>Запрос. Формулировка задачи и уточнения.</span>
+        </li>
+        <li>
+          <strong>Beads</strong>
+          <span>Контракт. Сохраняются требования, scope и критерии приёмки.</span>
+        </li>
+        <li>
+          <strong>Sol</strong>
+          <span>Планирование. openai-codex/gpt-6.1-sol разбивает задачу и готовит план.</span>
+        </li>
+        <li class="process-gate">
+          <strong>Owner go gate</strong>
+          <span>Одобрение. Владелец проверяет план и даёт добро перед&nbsp;реализацией.</span>
+        </li>
+        <li>
+          <strong>OpenCode Go</strong>
+          <span>Реализация. Kimi K2.7 Code пишет код. GLM-5.3 Flash помогает в&nbsp;разведке и мелких задачах, при&nbsp;необходимости заменяет основную модель. Всё выполняется через OMP.</span>
+        </li>
+        <li>
+          <strong>Review и приёмка</strong>
+          <span>Sol ревьюит результат. Владелец принимает или отправляет на&nbsp;доработку.</span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="roles" class="section" aria-labelledby="roles-heading">
+    <div class="container">
+      <h2 id="roles-heading">Роли</h2>
+      <div class="roles-list">
+        <div class="role-line">
+          <span class="role-name">Hermes</span>
+          <p class="role-desc">Вход и диалог. Здесь появляется первая формулировка задачи и уточнения.</p>
+        </div>
+        <div class="role-line">
+          <span class="role-name">Beads</span>
+          <p class="role-desc">Долговечный контракт задачи. Хранит scope, критерии и историю принятых решений.</p>
+        </div>
+        <div class="role-line">
+          <span class="role-name">Sol</span>
+          <p class="role-desc">openai-codex/gpt-6.1-sol. Планирует архитектуру, разбивает работу и ревьюит код.</p>
+        </div>
+        <div class="role-line">
+          <span class="role-name">OpenCode Go</span>
+          <p class="role-desc">Kimi K2.7 Code для реализации. GLM-5.3 Flash для разведки, быстрых задач и execution fallback.</p>
+        </div>
+        <div class="role-line role-omp">
+          <span class="role-name">OMP oh-my-pi</span>
+          <p class="role-desc">Оркестратор. Распределяет задачи и запускает исполнителей через task.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="start" class="section" aria-labelledby="start-heading">
+    <div class="container">
+      <h2 id="start-heading">Старт</h2>
+      <ol class="onboarding">
+        <li>Прочитайте README и установите или авторизуйте инструменты вручную по&nbsp;официальным инструкциям из README.</li>
+        <li>Склонируйте kit, настройте project paths и роли моделей. Не публикуйте ключи.</li>
+        <li>Создайте Beads issue, получите plan и явный owner go. После&nbsp;реализации и review примите результат.</li>
+      </ol>
+      <ul class="start-links">
+        <li><a class="btn btn-primary" href="https://github.com/eldarabilwapov/hermes-beads-opencode-starter/blob/starter-kit/README.md">Начать с&nbsp;README</a></li>
+        <li><a class="btn btn-secondary" href="https://github.com/eldarabilwapov/hermes-beads-opencode-starter/tree/starter-kit">Открыть на&nbsp;GitHub</a></li>
+        <li><a class="btn btn-secondary" href="https://github.com/eldarabilwapov/hermes-beads-opencode-starter/archive/refs/heads/starter-kit.zip">Скачать ZIP</a></li>
+      </ul>
+      <div class="clone-block">
+        <p id="clone-label" class="clone-label">Команда для клонирования</p>
+        <div class="clone-field">
+          <code id="clone-cmd" class="clone-code" aria-labelledby="clone-label">git clone --branch starter-kit https://github.com/eldarabilwapov/hermes-beads-opencode-starter.git</code>
+          <button class="btn btn-copy js-only" type="button" aria-controls="clone-cmd">
+            <span class="copy-label">Скопировать</span>
+          </button>
+        </div>
+        <p class="copy-status js-only" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="section" aria-labelledby="faq-heading">
+    <div class="container">
+      <h2 id="faq-heading">Ответы на&nbsp;вопросы</h2>
+      <div class="faq-list">
+        <details>
+          <summary>Какие подписки&nbsp;нужны?</summary>
+          <p>Для провайдеров моделей нужны собственные аккаунты, авторизация и подписки или доступные квоты. Условия и доступность определяют провайдеры.</p>
+        </details>
+        <details>
+          <summary>Кто одобряет&nbsp;результат?</summary>
+          <p>Владелец. Перед реализацией и после неё стоит owner go gate. Доступ инструментов к&nbsp;данным и API контролируется настройками и владельцем.</p>
+        </details>
+        <details>
+          <summary>Как здесь устроена&nbsp;privacy?</summary>
+          <p>Эта страница ничего не отправляет. Prompts и вызовы tools не sandbox: доступ к данным и API контролируется настройками и владельцем. Headless-режим always-ask может блокировать запуск, пока не получит подтверждение.</p>
+        </details>
+        <details>
+          <summary>На каких платформах&nbsp;работает?</summary>
+          <p>Целевые платформы: macOS, Linux и WSL2. Проверено только на macOS. Чистая установка и интеграция с провайдерами не гарантируются.</p>
+        </details>
+        <details>
+          <summary>Можно ли запускать&nbsp;unattended?</summary>
+          <p>По&nbsp;умолчанию рассчитывайте на&nbsp;участие владельца. Режим always-ask может ждать подтверждения и не будет удовлетворён автоматически.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>Starter kit Hermes + Beads + OpenCode&nbsp;Go. Независимый, неофициальный набор.</p>
+    <nav aria-label="Ссылки на&nbsp;репозиторий">
+      <ul class="footer-links">
+        <li><a class="btn btn-primary" href="https://github.com/eldarabilwapov/hermes-beads-opencode-starter/blob/starter-kit/README.md">Открыть README</a></li>
+        <li><a class="btn btn-secondary" href="https://github.com/eldarabilwapov/hermes-beads-opencode-starter/tree/starter-kit">Репозиторий</a></li>
+        <li><a class="btn btn-secondary" href="https://github.com/eldarabilwapov/hermes-beads-opencode-starter/archive/refs/heads/starter-kit.zip">Архив ZIP</a></li>
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var btn = document.querySelector(".btn-copy");
+  var code = document.getElementById("clone-cmd");
+  var status = document.querySelector(".copy-status");
+  if (!btn || !code || !status) return;
+
+  var timer = null;
+
+  function selectCode() {
+    var selection = window.getSelection();
+    var range = document.createRange();
+    range.selectNodeContents(code);
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }
+
+  function resetStatus() {
+    if (timer) {
+      clearTimeout(timer);
+      timer = null;
+    }
+    status.textContent = "";
+  }
+
+  function setStatus(message, autoClear) {
+    resetStatus();
+    status.textContent = message;
+    if (autoClear) {
+      timer = setTimeout(function () {
+        status.textContent = "";
+        timer = null;
+      }, 2000);
+    }
+  }
+
+  btn.addEventListener("click", function () {
+    var text = code.textContent || "";
+    resetStatus();
+    btn.disabled = true;
+
+    function finish() {
+      btn.disabled = false;
+    }
+
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function () {
+        setStatus("Скопировано", true);
+        finish();
+      }).catch(function () {
+        tryExecCommand();
+        finish();
+      });
+    } else {
+      tryExecCommand();
+      finish();
+    }
+
+    function tryExecCommand() {
+      selectCode();
+      var ok = false;
+      try {
+        ok = document.execCommand("copy");
+      } catch (e) {
+        ok = false;
+      }
+      if (ok) {
+        setStatus("Скопировано", true);
+      } else {
+        setStatus("Не удалось скопировать автоматически. Выделите команду и скопируйте вручную.", false);
+        selectCode();
+      }
+    }
+  });
+})();
+</script>
+</body>
+</html>
