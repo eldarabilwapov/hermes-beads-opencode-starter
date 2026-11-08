@@ -1,0 +1,75 @@
+# OMP config overlay for Hermes + Beads + Codex bridge
+# Copy this file to a location outside the repository, edit model selectors
+# and credentials under your own OMP profile, then pass it with --config.
+
+modelRoles:
+  # Default chat role and bundled task agent route to OpenCode Go Kimi.
+  default: opencode-go/kimi-k2.7-code:medium
+  task: opencode-go/kimi-k2.7-code:medium
+
+  # Planning, slow thinking, advisor and review stay on Codex.
+  plan: openai-codex/gpt-6.1-sol
+  slow: openai-codex/gpt-6.1-sol
+  advisor: openai-codex/gpt-6.1-sol
+  reviewer: openai-codex/gpt-6.1-sol
+
+  # Fast helpers and fallback roles route to GLM Flash.
+  scout: opencode-go/glm-5.3-flash
+  sonic: opencode-go/glm-5.3-flash
+  smol: opencode-go/glm-5.3-flash
+  tiny: opencode-go/glm-5.3-flash
+  vision: opencode-go/glm-5.3-flash
+
+retry:
+  # Explicit role chains. Empty list means no fallback for that role.
+  fallbackChains:
+    default:
+      - opencode-go/glm-5.3-flash
+    task:
+      - opencode-go/glm-5.3-flash
+    scout: []
+    sonic: []
+    smol: []
+    tiny: []
+    vision: []
+    plan: []
+    slow: []
+    advisor: []
+    reviewer: []
+
+    # Exact-model chains prevent an explicit Codex root from inheriting Kimi/GLM
+    # fallbacks, and keep GLM roles from falling back elsewhere.
+    openai-codex/gpt-6.1-sol: []
+    opencode-go/glm-5.3-flash: []
+    opencode-go/kimi-k2.7-code:
+      - opencode-go/glm-5.3-flash
+
+# Route built-in selectors through explicit roles so they do not drift.
+task:
+  agentModelOverrides:
+    task: "@task"
+    scout: "@scout"
+    sonic: "@sonic"
+    reviewer: "@reviewer"
+
+# Model allowlist: only these three catalog entries may be selected.
+enabledModels:
+  - openai-codex/gpt-6.1-sol
+  - opencode-go/kimi-k2.7-code
+  - opencode-go/glm-5.3-flash
+
+# Discovery sources to load. This is not a model-security boundary.
+enabledProviders: []
+
+# Safer default approval mode. CLI flags can override it for a single run.
+tools:
+  approvalMode: always-ask
+  approval:
+    read: allow
+    grep: allow
+    glob: allow
+    bash: prompt
+    eval: prompt
+    task: prompt
+    write: prompt
+    edit: prompt

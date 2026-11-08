@@ -1,0 +1,11 @@
+README.md
+MANIFEST.txt
+scripts/manager-bridge.sh
+scripts/check-kit.sh
+tests/smoke.sh
+tests/live-beads.sh
+templates/config.yml
+templates/AGENTS.md
+templates/bridge.env.example
+skills/hermes-beads-manager/SKILL.md
+docs/VERIFICATION.md
